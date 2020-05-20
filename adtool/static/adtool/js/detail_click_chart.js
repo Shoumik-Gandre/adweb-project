@@ -1,13 +1,16 @@
 const adclicks = [];
 const hourlist = [];
+const colorlist = [];
 const obj = {};
 
 
-
 function fill_chart_lists() {
+    let color;
     // This function fills adclicks and hourlist with corresponding values
     click_log.forEach(click_data => {
-        const d = time_calc(new Date(click_data.fields.click_date));
+        const d = date_calc(new Date(click_data.fields.click_date));
+        color = 'rgba(' + Math.ceil(Math.random()*255 + 1) + ', ' + Math.ceil(Math.random()*255 + 1) + ', ' + Math.ceil(Math.random()*255 + 1) + ', ' + 0.2 +')';
+        colorlist.push(color)
         const index_d = hourlist.indexOf(d)
         if (index_d===-1){
             hourlist.push(d);
@@ -25,6 +28,10 @@ function fill_chart_lists() {
     function time_calc(in_date) {
         return (in_date.getHours() > 12 ? in_date.getHours()-12 + "PM" : in_date.getHours() + "AM");
     }
+
+    function date_calc(in_date) {
+        return in_date.getFullYear() + '/' + in_date.getMonth() + '/' + in_date.getDate();
+    }
 }
 
 fill_chart_lists()
@@ -33,13 +40,15 @@ fill_chart_lists()
 
 const ctx = document.getElementById('detail-click-chart').getContext('2d');
 const myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'horizontalBar',
     data: {
         labels: hourlist,
         datasets: [{
             label: 'Clicks',
             data: adclicks,
-            backgroundColor: [
+            backgroundColor: colorlist,
+            /*
+            [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
                 'rgba(255, 206, 86, 0.2)',
@@ -47,6 +56,8 @@ const myChart = new Chart(ctx, {
                 'rgba(153, 102, 255, 0.2)',
                 'rgba(255, 159, 64, 0.2)'
             ],
+            */
+            /*
             borderColor: [
                 'rgba(255, 99, 132, 1)',
                 'rgba(54, 162, 235, 1)',
@@ -54,13 +65,14 @@ const myChart = new Chart(ctx, {
                 'rgba(75, 192, 192, 1)',
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
-            ],
+            ]
+            */
             borderWidth: 1
         }]
     },
     options: {
         scales: {
-            yAxes: [{
+            xAxes: [{
                 scaleLabel: {
                     display: true,
                     labelString: 'Clicks',
@@ -71,7 +83,7 @@ const myChart = new Chart(ctx, {
                     stepSize: 1
                 }
             }],
-            xAxes: [{
+            yAxes: [{
                 scaleLabel: {
                     display: true,
                     labelString: 'Hours',

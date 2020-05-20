@@ -12,7 +12,7 @@ FILENAME = 'ad_post.html'
 url link: https://<domain-name>/api/<size>/<key>
 """
 data = {
-    'size': SIZE[0],
+    'size': SIZE[3],
     'key': KEY
 }
 
