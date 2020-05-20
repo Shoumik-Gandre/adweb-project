@@ -36,7 +36,7 @@ class AdvertisementDetailView(LoginRequiredMixin, UserPassesTestMixin,  DetailVi
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        log = serializers.serialize('json', self.get_object().advertisementlog_set.filter(is_clicked=True))
+        log = serializers.serialize('json', self.get_object().advertisementlog_set.all(), fields=('pk', 'click_date', 'view_date', 'is_clicked'))
         context['click_log'] = log
         return context
 

@@ -1,28 +1,54 @@
 const adclicks = [];
+const adviews = [];
 const hourlist = [];
+const adview_hourlist = [];
 const colorlist = [];
+const borderColorList = [];
 const obj = {};
-
+const adview_obj = {};
 
 function fill_chart_lists() {
-    let color;
+    let color, borderColor, redValue, greenValue, blueValue, d, index_d;
     // This function fills adclicks and hourlist with corresponding values
     click_log.forEach(click_data => {
-        const d = date_calc(new Date(click_data.fields.click_date));
-        color = 'rgba(' + Math.ceil(Math.random()*255 + 1) + ', ' + Math.ceil(Math.random()*255 + 1) + ', ' + Math.ceil(Math.random()*255 + 1) + ', ' + 0.2 +')';
-        colorlist.push(color)
-        const index_d = hourlist.indexOf(d)
-        if (index_d===-1){
-            hourlist.push(d);
-            obj[hourlist[hourlist.length-1]] = 1
+        d = date_calc(new Date(click_data.fields.click_date));
+
+        /*
+        // Color Related
+        redValue = Math.ceil(Math.random()*255 + 1);
+        greenValue = Math.ceil(Math.random()*255 + 1);
+        blueValue = Math.ceil(Math.random()*255 + 1);
+        color = 'rgba(' + redValue + ', ' + greenValue + ', ' + blueValue + ', ' + 0.2 +')';
+        borderColor = 'rgba(' + redValue + ', ' + greenValue + ', ' + blueValue + ', ' + 1 +')';
+        colorlist.push(color);
+        borderColorList.push(borderColor);
+        */
+
+        // filling hourlist, obj
+        index_d = hourlist.indexOf(d);
+        if (index_d===-1) {
+            if(click_data.fields.is_clicked === true) {
+                hourlist.push(d);
+                obj[hourlist[hourlist.length - 1]] = 1;
+            }
+        } else{
+            obj[d] += 1;
         }
-        else{
-            obj[d] += 1
+        index_d = adview_hourlist.indexOf(d);
+        if (index_d===-1) {
+            adview_hourlist.push(d);
+            adview_obj[adview_hourlist[adview_hourlist.length - 1]] = 1;
+        } else{
+            adview_obj[d] += 1
         }
     });
     
     hourlist.forEach(key => {
         adclicks.push(obj[key]);
+    });
+
+    adview_hourlist.forEach(key =>{
+        adviews.push(adview_obj[key]);
     });
     
     function time_calc(in_date) {
@@ -30,7 +56,7 @@ function fill_chart_lists() {
     }
 
     function date_calc(in_date) {
-        return in_date.getFullYear() + '/' + in_date.getMonth() + '/' + in_date.getDate();
+        return in_date.getFullYear() + '/' + (parseInt(in_date.getMonth()) + 1).toString() + '/' + in_date.getDate();
     }
 }
 
@@ -46,27 +72,15 @@ const myChart = new Chart(ctx, {
         datasets: [{
             label: 'Clicks',
             data: adclicks,
-            backgroundColor: colorlist,
-            /*
-            [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            */
-            /*
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ]
-            */
+            backgroundColor: 'rgba(153, 51, 255, 0.2)',
+            borderColor: 'rgba(153, 51, 255, 1)',
+            borderWidth: 1
+        },
+        {
+            label: 'Views',
+            data: adviews,
+            backgroundColor: 'rgba(255, 204, 0, 0.2)',
+            borderColor: 'rgba(255, 204, 0, 1)',
             borderWidth: 1
         }]
     },
@@ -75,7 +89,7 @@ const myChart = new Chart(ctx, {
             xAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: 'Clicks',
+                    labelString: 'Clicks and Views',
                 },
                 ticks: {
                     beginAtZero: true,
@@ -86,7 +100,7 @@ const myChart = new Chart(ctx, {
             yAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: 'Hours',
+                    labelString: 'Date',
                 },
             }]
         }
