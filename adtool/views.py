@@ -11,6 +11,7 @@ from .models import Advertisement, AdvertisementLog, Website
 from adtool.advertisement_api import AdvertisementAPI
 import secrets
 import string
+import json
 
 
 
@@ -113,10 +114,19 @@ def ad_redir(self, pk, site_pk, unique_key):
 @login_required
 def dashboard(request):
     ads = Advertisement.objects.filter(user=request.user)
-    ads = serializers.serialize('json', ads)
+    alog_click_count = []
+    alog_view_count = []
+    for ad in ads:
+        alog_view_count.append(ad.advertisementlog_set.all().count())
+        alog_click_count.append(ad.advertisementlog_set.filter(is_clicked=True).count())
+    ads = serializers.serialize('json', ads, fields=('name', 'clicks'))
+    alog_click_count = json.dumps(alog_click_count)
+    alog_view_count
 
     context = {
         'ads': ads,
+        'alog_click_count': alog_click_count,
+        'alog_view_count': alog_view_count,
     }
     return render(request, 'adtool/dashboard.html', context)
 

@@ -18,7 +18,11 @@
 <script type="text/javascript">
   // This stores the django template variables of this page
   var ads = "{{ ads|escapejs }}";
-  ads = JSON.parse(ads)
+  var alog_click_count = "{{ alog_click_count|escapejs }}";
+  var alog_view_count = "{{ alog_view_count|escapejs }}";
+  alog_click_count = JSON.parse(alog_click_count)
+  alog_view_count = JSON.parse(alog_view_count)
+  ads = JSON.parse(ads);
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>

@@ -1,6 +1,7 @@
-let adnames = []
-let adclicks = []
-let colorlist = []
+let adnames = [];
+let adclicks = [];
+let adviews = [];
+let colorlist = [];
 
 ads.forEach(element => {
     adnames.push(element.fields.name);
@@ -11,12 +12,12 @@ ads.forEach(element => {
 
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'horizontalBar',
     data: {
         labels: adnames,
         datasets: [{
             label: 'Clicks',
-            data: adclicks,
+            data: alog_click_count,
             backgroundColor: colorlist
             /*
             [
@@ -37,11 +38,23 @@ var myChart = new Chart(ctx, {
                 'rgba(255, 159, 64, 1)'
             ]*/,
             borderWidth: 1
-        }]
+        },
+        {
+			label: 'Total Views',
+			backgroundColor: "rgba(228, 233, 237, 1)",
+			data: alog_view_count,
+		}
+    ]
     },
     options: {
         scales: {
             yAxes: [{
+                scaleLabel: {
+                    display: true,
+                },
+                stacked: true,
+            }],
+            xAxes: [{
                 scaleLabel: {
                     display: true,
                     labelString: 'Clicks',
@@ -50,12 +63,6 @@ var myChart = new Chart(ctx, {
                     beginAtZero: true,
                     callback: function (value) { if (Number.isInteger(value)) { return value; } },
                     stepSize: 1
-                }
-            }],
-            xAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Hours',
                 },
             }]
         }

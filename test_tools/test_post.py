@@ -4,7 +4,7 @@ import os
 
 IP = '127.0.0.1'
 PORT = '8000'
-SIZE = 'leaderboard'
+SIZE = ['medium rectangle', 'large rectangle', 'half page', 'leaderboard', 'free size']
 KEY = 'P53ZD2pSaQdg43oWK1Fuop2VIysPO9p0'
 KEY = 'fqXKaCiNoSksZE8ZqoZpvsMiPLMfwWWM'
 FILENAME = 'ad_post.html'
@@ -12,7 +12,7 @@ FILENAME = 'ad_post.html'
 url link: https://<domain-name>/api/<size>/<key>
 """
 data = {
-    'size': SIZE,
+    'size': SIZE[0],
     'key': KEY
 }
 
