@@ -1,0 +1,75 @@
+{% extends 'adtool/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="content-section">
+    <div class="media">
+        <div class="account-border">
+            <img class="account-img account-border" src="{{ user.profile.image.url }}"
+                style="display: block; border: 1px solid black ; border-radius: 10px;" id="image_tag">
+        </div>
+        <div class="media-body">
+            <h2 class="account-heading">{{ user.username }}</h2>
+            <p class="text-secondary">{{ user.email }}</p>
+            <h6 class="h6">Want to change profile picture? Just add it here!</h3>
+            <input
+                form="profile-form"
+                type="file"
+                name="{{ p_form.image.name }}"
+                id="{{ p_form.image.id_for_label }}"
+                accept="image/*"
+                {% if form.image.value != None %}
+                    value="{{ p_form.image.value|stringformat:'s' }}"
+                {% endif %}
+            />
+        </div>
+    </div>
+    <form id="profile-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Profile Info</legend>
+            {{ u_form|crispy }}
+
+            {% for field in p_form %}
+                {% if field.id_for_label != 'id_image' %}
+                    <div class="fieldWrapper">
+                        {{ field.errors }}
+                        {{ field|as_crispy_field }}
+                        {% if field.help_text %}
+                        <p class="help">{{ field.help_text|safe }}</p>
+                        {% endif %}
+                    </div>
+                {% else %}
+                {% endif %}
+            {% endfor %}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Update</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script type="text/javascript">
+    const image_tag = '#image_tag'; // This is the id of img that'll change
+    const id_image = '#{{ p_form.image.id_for_label }}'; // This is the id of the input tag that changes the image
+    
+    function readURL(input) {
+        // Handling image input changing
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $(image_tag).attr('src', e.target.result);
+                // isImageSet = true;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $(id_image).change(function(){
+        readURL(this);
+    });
+</script>
+{% endblock javascript %}

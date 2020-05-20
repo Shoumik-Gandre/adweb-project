@@ -1,0 +1,24 @@
+
+<div id="ad-holder"></div>
+<button onclick="foo()">Click Me</button>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script type="text/javascript">
+function foo() {
+    $.ajax({
+        type: 'GET',
+        url: 'http://127.0.0.1:8000/adv-api/',
+        dataType:'jsonp',
+        crossDomain: true,
+        data: {
+                 temp_key: '3e5BX4ap1y',
+                 size: 'leaderboard'
+        },
+        success: function( data ) 
+        {
+            alert('working');
+            console.log(data);
+            $('#ad-holder').innerhtml = data;
+        },
+    });
+}
+</script>

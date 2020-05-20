@@ -1,0 +1,56 @@
+{% extends 'adtool/base.html' %}
+{% load static %}
+{% block content %}
+{% if Advertisements %}
+
+{% if is_paginated%}
+    {% if page_obj.has_previous %}
+        <a class="btn btn-outline-dark mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-dark mb-4" href="?page={{page_obj.previous_page_number}}">Previous</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+            <a class="btn btn-dark mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a class="btn btn-outline-dark mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+        <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-dark mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+{% endif %}
+
+<div class="card-columns">
+    {% for advertisement in Advertisements %}
+        <div class="card">
+            <img src="{{ advertisement.image.url }}" class="card-img-top" alt="advertisement image">
+            <div class="card-body">
+                <a class="card-title h2 article-title" href="{% url 'detail' advertisement.id %}">{{ advertisement.name }}</a>
+                <p class="card-text">{{ advertisement.url_link }}</p>
+                <p class="card-text" id="ad-status-{{ advertisement.pk }}">status: {% if advertisement.is_enabled %} Enabled {% else %} Disabled {% endif %}</p>
+                <button 
+                    class="btn btn-sm {% if advertisement.is_enabled %} btn-success {% else %} btn-secondary {% endif %}"
+                    name="{{ advertisement.identification_key }}" 
+                    id="ad-id-{{ advertisement.pk }}" 
+                    value="{{ advertisement.is_enabled }}"
+                    onclick="toggleEnabler('{{ advertisement.identification_key }}', 'ad-id-{{ advertisement.pk }}', this.value)"
+                >
+                    {% if advertisement.is_enabled %} Click to disable {% else %} Click to enable {% endif %}
+                    
+                </button>
+                <a class="btn btn-outline-secondary btn-sm mt-1 mb-1" href="{% url 'update' advertisement.id %}">update</a>
+                <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'delete' advertisement.id %}">delete</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endif %}
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="{% static 'adtool/js/home/enableToggle.js' %}"></script>
+{% endblock javascript %}

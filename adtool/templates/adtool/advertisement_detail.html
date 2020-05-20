@@ -1,0 +1,49 @@
+{% extends 'adtool/base.html' %}
+{% load static %}
+{% block content %}
+{% if object %}
+
+<div>
+    <div class="container">
+        <legend>
+            <h3 class="h3">
+                {{ object.name }}
+            </h3>
+            <p class="card-text" id="ad-status-{{ advertisement.pk }}">status: {% if advertisement.is_enabled %} Enabled {% else %} Disabled {% endif %}</p>
+            <button 
+                class="btn btn-sm {% if advertisement.is_enabled %} btn-success {% else %} btn-secondary {% endif %}"
+                name="{{ advertisement.identification_key }}" 
+                id="ad-id-{{ advertisement.pk }}" 
+                value="{{ advertisement.is_enabled }}"
+                onclick="toggleEnabler('{{ advertisement.identification_key }}', 'ad-id-{{ advertisement.pk }}', this.value)"
+            >
+                {% if advertisement.is_enabled %} Click to disable {% else %} Click to enable {% endif %}
+                
+            </button>
+            <a class="btn btn-outline-secondary btn-sm mt-1 mb-1" href="{% url 'update' advertisement.id %}">update</a>
+            <a class="btn btn-outline-danger btn-sm mt-1 mb-1" href="{% url 'delete' advertisement.id %}">delete</a>
+        </legend>
+        <div>
+            <img src="{{ object.image.url }}" class="img-responsive"
+                style="float: left; margin-right: 10px;" />
+        </div>
+        <br>
+        <p class="h6" style="clear:left;">Url: {{ object.url_link }}</p>
+        <canvas id="detail-click-chart"></canvas>
+
+    </div>
+  
+</div>
+
+{% endif %}
+{% endblock content %}
+
+{% block javascript %}
+<script>
+    click_log = JSON.parse("{{ click_log|escapejs }}")
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="{% static 'adtool/js/detail_click_chart.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="{% static 'adtool/js/home/enableToggle.js' %}"></script>
+{% endblock javascript%}

@@ -1,0 +1,24 @@
+:root{
+    --sidebar-background-color: #363636;
+    --sidebar-font-color: white;
+    --sidebar-border-bottom-color: rgba(100,100,100,0.3);
+}
+
+
+#sidebar {
+    position: fixed;
+    width: 200px;
+    height: 100%;
+    background: var(--sidebar-background-color);/*#151719; */
+    top: 56px;
+    left: 0px;
+    z-index: 1;
+}
+
+#sidebar ul li {
+    text-decoration: none;
+    color: var(--sidebar-font-color);
+    list-style: none;
+    padding: 15px 10px;
+    border-bottom: 1px solid var(--sidebar-border-bottom-color);
+}

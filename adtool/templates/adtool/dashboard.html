@@ -1,0 +1,26 @@
+<!-- MAKE A GRAPH HERE, I'VE JUST MADE A TEST PIECHART... WE NEED A LINE/BAR graph for y = clicks, x = day -->
+{% extends 'adtool/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2 class="text-center">Dashboard</h2>
+
+<div id="chartdiv"></div>
+<div class="card border-dark text-white lg-12">
+    <div class="card-header bg-dark text-center">Advertisement v/s Clicks</div>
+    <div class="card-body">
+      <canvas id="myChart" class="card-text"></canvas>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascript %}
+<script type="text/javascript">
+  // This stores the django template variables of this page
+  var ads = "{{ ads|escapejs }}";
+  ads = JSON.parse(ads)
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="{% static 'adtool/js/clicks_chart.js' %}"></script>
+{% endblock javascript %}

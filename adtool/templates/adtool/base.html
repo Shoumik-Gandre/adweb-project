@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+    <title>AdWeb - {{ title }}</title>
+    {% else %}
+    <title>AdWeb</title>
+    {% endif %}
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{% static 'adtool/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'adtool/css/sidebar.css' %}">
+    {% block stylesheet %}{% endblock stylesheet %}
+</head>
+
+<body>
+
+    <header class="site-header">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand mr-4" href="{% url 'landing' %}">AdWeb</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+                    aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
+                        <a class="nav-item nav-link" href="{% url 'register_website' %}">Adclient</a>
+                        {% if user.is_authenticated %}
+                        <a class="nav-item nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                        {% endif %}
+                        <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
+                    </div>
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                        {% if user.is_authenticated %}
+                        <a class="nav-item nav-link" href="{% url 'users:profile' %}">Profile</a>
+                        <a class="nav-item nav-link" href="{% url 'upload' %}">New Ad</a>
+                        <a class="nav-item nav-link" href="{% url 'users:logout' %}">Logout</a>
+                        {% else %}
+                        <a class="nav-item nav-link" href="{% url 'users:login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'users:register' %}">Register</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!--
+        <div id="sidebar">
+            <ul>
+                <li>Element A</li>
+                <li>Element B</li>
+                <li>Element C</li>
+            </ul>
+        </div>
+    -->
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+                {% block content %}{% endblock content %}
+            </div>
+        </div>
+    </main>
+    <div id="particles-js"></div>
+    
+
+    <!-- Optional JavaScript -->
+    <script src="{% static 'adtool/js/particles.js' %}"></script>
+    <script src="{% static 'adtool/js/app.js' %}"> </script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    {% block javascript %}{% endblock javascript %}
+</body>
+
+</html>
