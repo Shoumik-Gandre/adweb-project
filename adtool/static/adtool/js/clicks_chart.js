@@ -17,7 +17,7 @@ var myChart = new Chart(ctx, {
             data: alog_click_count,
             backgroundColor: 'rgba(51, 102, 255, 0.2)',
             borderColor: 'rgba(51, 102, 255, 1)',
-            borderWidth: 1
+            borderWidth: 1,
         },
         {
 			label: 'Total Views',

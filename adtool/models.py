@@ -37,7 +37,7 @@ class Advertisement(models.Model, ModelDiffMixin):
             ('medium rectangle', '300x250 pixels'),
             ('large rectangle', '336x280 pixels'),
             ('leaderboard', '728x90 pixels'),
-            ('half page', '320x600 pixels'),
+            ('half page', '300x600 pixels'),
             ('free size', 'free size')
         ), 
         default='free size'
@@ -76,7 +76,7 @@ class Advertisement(models.Model, ModelDiffMixin):
                 bottom = 90
                 
             elif self.size == 'half page':
-                right = 320
+                right = 300
                 bottom = 600
                 
             elif self.size == 'free size':

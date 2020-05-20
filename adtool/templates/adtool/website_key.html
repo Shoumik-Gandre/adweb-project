@@ -26,20 +26,41 @@
             {% for website in websites %}
                 <tr id="tr-{{ website.userkey }}">
                     <td scope="row">{{ forloop.counter }}</td>
-                    <td>{{ website.url }}</td>
+                    <td id="td-url-{{ website.userkey }}">{{ website.url }}</td>
                     <td id="td-{{ website.userkey }}">{{ website.userkey }}</td>
                     <td>
-                        <button class="btn btn-sm btn-secondary" id="change-button-{{ website.userkey }}" onclick="changeKey(this.id)">Change Key</button>
-                        <button class="btn btn-sm btn-danger" id="delete-button-{{ website.userkey }}" onclick="deleteKey(this.id)">Delete Key</button>
+                        <button class="btn btn-sm btn-secondary" id="change-button-{{ website.userkey }}" onclick="changeKey(this.id)" data-target="#">Change Key</button>
+                        <button class="btn btn-sm btn-danger" id="delete-button-{{ website.userkey }}" data-toggle="modal" data-target="#remove-key-modal">Delete Key</button>
                     </td>
                 </tr>
             {% endfor %}
             {% endif %}
         </tbody>
     </table>
+
+    <!-- Modal -->
+<div class="modal fade" id="remove-key-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete:
+          <p id="key-delete-displayer">text</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" id="confirm-key-delete" value="#">Yes Delete</button>
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock content %}
 
 {% block javascript %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="{% static 'adtool/js/home/keyManipulation.js' %}"></script>
 {% endblock javascript %}

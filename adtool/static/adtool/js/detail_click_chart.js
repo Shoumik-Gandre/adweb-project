@@ -90,6 +90,7 @@ const myChart = new Chart(ctx, {
                 scaleLabel: {
                     display: true,
                     labelString: 'Clicks and Views',
+                    barThickness: 10,
                 },
                 ticks: {
                     beginAtZero: true,
@@ -101,6 +102,7 @@ const myChart = new Chart(ctx, {
                 scaleLabel: {
                     display: true,
                     labelString: 'Date',
+                    barThickness: 10
                 },
             }]
         }
